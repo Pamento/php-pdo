@@ -2,82 +2,59 @@
 
 use Slim\Http\Request;
 use Slim\Http\Response;
-use simplon\entities\Person;
-use simplon\dao\DaoPerson;
+use pdoblog\entities\User;
+use pdoblog\dao\DaoUser;
 
 // Routes
 
-
 $app->get('/', function (Request $request, Response $response, array $args) {
-    //On instancie le dao
-    $dao = new DaoPerson();
-    //On récupère les Persons via la méthode getAll
-    $persons = $dao->getAll();
-    //On passe les persons à la vue index.twig
+    $dao = new DaoUser();
+    $users = $dao->getAll();
     return $this->view->render($response, 'index.twig', [
-        'persons' => $persons
+        'users' => $users
     ]);
 })->setName('index');
 
-$app->get('/addperson', function (Request $request, Response $response, array $args) {
-    return $this->view->render($response, 'addperson.twig');
-})->setName('addperson');
+$app->get('/adduser', function (Request $request, Response $response, array $args) {
+    return $this->view->render($response, 'adduser.twig');
+})->setName('adduser');
 
 
 
-$app->post('/addperson', function (Request $request, Response $response, array $args) {
-    //On récupère les données du formulaire
+$app->post('/adduser', function (Request $request, Response $response, array $args) {
     $form = $request->getParsedBody();
-    //On crée une Person à partir de ces données
-    $newPerson = new Person($form['name'], new DateTime($form['birthdate']), $form['gender']);
-    //On instancie le DAO
-    $dao = new DaoPerson();
-    //On utilise la méthode add du DAO en lui donnant la Person qu'on vient de créer
-    $dao->add($newPerson);
-    //On affiche la même vue que la route en get
-    return $this->view->render($response, 'addperson.twig', [
-        'newId' => $newPerson->getId()
+    $newUser = new User($form['name'], $form['surname'], $form['username'], $form['email']);
+    $dao = new DaoUser();
+    $dao->add($newUser);
+    return $this->view->render($response, 'adduser.twig', [
+        'newId' => $newUser->getId()
     ]);
-})->setName('addperson');
+})->setName('adduser');
 
-$app->get('/updateperson/{id}', function (Request $request, Response $response, array $args) {
-    //On instancie le DAO
-    $dao = new DaoPerson;
-    //On récupère la Person à partir de l'id
-    $person = $dao->getById($args['id']);
-    // On affiche la vue du formulaire d'update d'une peronne
-    return $this->view->render($response, 'updateperson.twig', [
-        'person' => $person
+$app->get('/updateuser/{id}', function (Request $request, Response $response, array $args) {
+    $dao = new DaoUser;
+    $user = $dao->getById($args['id']);
+    return $this->view->render($response, 'updateuser.twig', [
+        'user' => $user
     ]);
-    
-})->setName('updateperson');
+})->setName('updateuser');
 
-$app->post('/updateperson/{id}', function (Request $request, Response $response, array $args) {
-    //On instancie le DAO
-    $dao = new DaoPerson;
-    //On récupère les données du formulaire
+$app->post('/updateuser/{id}', function (Request $request, Response $response, array $args) {
+    $dao = new DaoUser;
     $postData = $request->getParsedBody();
-    //On récupère la Person à partir de l'id
-    $person = $dao->getById($args['id']);
-    //On met à jour son nom, sa date de naissance et son genre
-    $person->setName($postData['name']);
-    $person->setBirthdate(new \DateTime($postData['birthdate']));
-    $person->setGender($postData['gender']);
-    //On update la personne
-    $dao->update($person);
-    //On récupère l'URL da la route index (page d'accueil)
+    $user = $dao->getById($args['id']);
+    $user->setName($postData['name']);
+    $user->setSurname($postData['surname']);
+    $user->setUsername($postData['username']);
+    $user->setEmail($postData['email']);
+    $dao->update($user);
     $redirectUrl = $this->router->pathFor('index');
-    //On redirige l'utilisateur sur la page d'accueil
     return $response->withRedirect($redirectUrl);
-})->setName('updateperson');
+})->setName('updateuser');
 
-$app->get('/deleteperson/{id}', function (Request $request, Response $response, array $args) {
-    //On instancie le DAO
-    $dao = new DaoPerson;
-    //On delete la personne
+$app->get('/deleteuser/{id}', function (Request $request, Response $response, array $args) {
+    $dao = new DaoUser;
     $dao->delete($args['id']);
-    //On récupère l'URL da la route index (page d'accueil)
     $redirectUrl = $this->router->pathFor('index');
-    //On redirige l'utilisateur sur la page d'accueil
     return $response->withRedirect($redirectUrl);
-})->setName('deleteperson');
+})->setName('deleteuser');
