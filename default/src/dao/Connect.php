@@ -21,6 +21,4 @@ class Connect {
         }
         return Connect::$instance->pdo;
     }
-    
-
 }
