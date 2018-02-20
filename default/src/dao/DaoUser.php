@@ -42,11 +42,12 @@ class DaoUser {
     }
     public function add(User $user) {
         try {
-            $query = Connect::getInstance()->prepare('INSERT INTO User (name,surname,username,email) VALUES (:name, :surname, :username, :email)');
+            $query = Connect::getInstance()->prepare('INSERT INTO User (name,surname,username,email) VALUES (:name, :surname, :username, :email, :passwrod)');
             $query->bindValue(':name',$user->getName(),\PDO::PARAM_STR);
             $query->bindValue(':surname',$user->getSurame(),\PDO::PARAM_STR);
             $query->bindValue(':username',$user->getUsername(),\PDO::PARAM_STR);
             $query->bindValue(':email',$user->getEmail(),\PDO::PARAM_STR);
+            $query->bindValue(':password',$user->getPassword(),\PDO::PARAM_STR);
 
             $query->execute();
             $user->setId(Connect::getInstance()->lastInsertId());

@@ -3,7 +3,9 @@
 use Slim\Http\Request;
 use Slim\Http\Response;
 use pdoblog\entities\User;
+use pdoblog\entities\Post;
 use pdoblog\dao\DaoUser;
+use pdoblog\dao\DaoPost;
 
 // Routes
 
@@ -47,6 +49,7 @@ $app->post('/updateuser/{id}', function (Request $request, Response $response, a
     $user->setSurname($postData['surname']);
     $user->setUsername($postData['username']);
     $user->setEmail($postData['email']);
+    // $user->set($postData['pass']);
     $dao->update($user);
     $redirectUrl = $this->router->pathFor('index');
     return $response->withRedirect($redirectUrl);

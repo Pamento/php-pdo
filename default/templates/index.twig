@@ -3,43 +3,45 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>My PDO Project</title>
+    <title>Blog Molos</title>
     <link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
-    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+		<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+		crossorigin="anonymous">
+		<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>My Pdo Project</h1>
+    <h1>Blogs Molos</h1>
 
 
-    <a href="{{ path_for('addperson') }}">Add Person</a>
+    <a href="{{ path_for('adduser') }}">Add User</a>
     <table class="table">
         <thead class="thead-default">
             <tr>
                 <th> ID </th>
                 <th> Name </th>
-                <th> Birth Date</th>
-                <th> Gender </th>
+                <th> Surname </th>
+                <th> Username </th>
                 <th>Update</th>
                 <th>Delete</th>
-                
             </tr>
         </thead>
         <tbody>
-            {% for person in persons %}
+            {% for user in users %}
             <tr>
-                <th scope="row">{{person.id}}</th>
-                <td>{{person.name}}</td>
-                <td>{{person.birthdate | date("d/m/Y")}}</td>
-                <td>{{person.gender}}</td>
+                <th scope="row">{{ user.id }}</th>
+                <td>{{ user.name }}</td>
+                <td>{{ user.surname }}</td>
+                <td>{{ user.gender }}</td>
                 <td>
-                    <a href="{{ path_for('updateperson', {'id': person.id}) }}">
-                        <i class="far fa-edit"></i>
+                    <a href="{{ path_for('updateuser', {'id': user.id}) }}">
+											<img src="glyph-iconset-master/svg/si-glyph-pen-nib.svg" alt="">
                     </a>
                 </td>
                 <td>
-                    <a href="{{ path_for('deleteperson', {'id': person.id}) }}">
-                        <i class="fas fa-trash-alt"></i>
+                    <a href="{{ path_for('deleteuser', {'id': user.id}) }}">
+											<img src="glyph-iconset-master/svg/si-glyph-trash.svg" alt="">
                     </a>
                 </td>
             </tr>
@@ -47,11 +49,9 @@
             {% endfor %}
         </tbody>
     </table>
-    
 
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
-        crossorigin="anonymous">
+
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"

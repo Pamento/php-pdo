@@ -1,7 +1,7 @@
 <?php
 
 
-namespace simplon\dao;
+namespace pdoblog\dao;
 
 class Connect {
     private static $instance;

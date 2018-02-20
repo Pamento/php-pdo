@@ -27,8 +27,8 @@
         }
     },
     "autoload": {
-        "psr-4": {            
-            "simplon\\": "src/"
+        "psr-4": {
+            "pdoblog\\": "src/"
         }
     },
     "config": {

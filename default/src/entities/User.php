@@ -7,7 +7,8 @@ class User {
     private $name;
     private $surname;
     private $username;
-    private $email;
+		private $email;
+		private $password;
 
 		public function __construct(string $name,
 																string $surname,
@@ -16,8 +17,11 @@ class User {
 																int $id=null)
 																{
         $this->id = $id;
-        $this->name = $name;
-        $this->email = $email;
+				$this->name = $name;
+				$this->surname = $surname;
+				$this->username = $username;
+				$this->email = $email;
+				$this->password = $password;
 		}
     /**
      * Get the value of id
@@ -117,5 +121,24 @@ class User {
         $this->username = $username;
 
         return $this;
+
+		/**
+		 * Get the value of password
+		 */ 
+		public function getPassword()
+		{
+				return $this->password;
+		}
+
+		/**
+		 * Set the value of password
+		 *
+		 * @return  self
+		 */ 
+		public function setPassword($password)
+		{
+				$this->password = $password;
+
+				return $this;
+		}
     }
-}
