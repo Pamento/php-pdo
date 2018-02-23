@@ -13,7 +13,8 @@ class DaoUser {
                 $user = new User($row['name'],
                             $row['surname'],
                             $row['username'],
-                            $row['email'],
+														$row['email'],
+														'',
                             $row['id']);
                 $tab[] = $user;
             }
@@ -31,7 +32,8 @@ class DaoUser {
                 $user = new User($row['name'],
                             $row['surname'],
                             $row['username'],
-                            $row['email'],
+														$row['email'],
+														$row['password'],
                             $row['id']);
                 return $user;
             }
@@ -39,12 +41,32 @@ class DaoUser {
             echo $e;
         }
         return null;
-    }
+		}
+		public function getByLogin(string $email,string $password){
+			try {
+				$query = Connect::getInstance()->prepare('SELECT * FROM User WHERE email = :email AND password = :password');
+				$query->bindValue(':email',$email,\PDO::PARAM_STR);
+				$query->bindValue(':password',$password,\PDO::PARAM_STR);
+				$query->execute();
+				if($row = $query->fetch()) {
+					$user = new User($row['name'],
+											$row['surname'],
+											$row['username'],
+											$row['email'],
+											$row['password'],
+											$row['id']);
+					return $user;
+				}
+			}catch(\PDOException $e) {
+				echo $e;
+			}
+			return null;
+		}
     public function add(User $user) {
         try {
-            $query = Connect::getInstance()->prepare('INSERT INTO User (name,surname,username,email) VALUES (:name, :surname, :username, :email, :passwrod)');
+            $query = Connect::getInstance()->prepare('INSERT INTO User (name,surname,username,email,password) VALUES (:name, :surname, :username, :email, :password)');
             $query->bindValue(':name',$user->getName(),\PDO::PARAM_STR);
-            $query->bindValue(':surname',$user->getSurame(),\PDO::PARAM_STR);
+            $query->bindValue(':surname',$user->getSurname(),\PDO::PARAM_STR);
             $query->bindValue(':username',$user->getUsername(),\PDO::PARAM_STR);
             $query->bindValue(':email',$user->getEmail(),\PDO::PARAM_STR);
             $query->bindValue(':password',$user->getPassword(),\PDO::PARAM_STR);

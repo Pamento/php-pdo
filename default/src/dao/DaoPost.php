@@ -7,7 +7,7 @@ class DaoPost {
     public function getAll():array {
         $tab = [];
         try {
-            $query = Connect::getInstance()->prepare('SELECT * FROM articles');
+            $query = Connect::getInstance()->prepare('SELECT * FROM user RIGHT JOIN articles ON person.id = articles.id_person;');
             $query->execute();
             while($row = $query->fetch()) {
                 $post = new Post($row['title'],
@@ -20,6 +20,23 @@ class DaoPost {
             echo $e;
         }
         return $tab;
+    }
+    public function getByUser(int $id_user) {
+        try {
+            $query = Connect::getInstance()->prepare('SELECT * FROM articles WHERE id_user=:id_user');
+            $query->bindValue(':id_user', $id_user, \PDO::PARAM_INT);
+            $query->execute();
+            if($row = $query->fetch()) {
+                $post = new Post($row['title'],
+                            $row['article'],
+                            $row['id'],
+                            $row['id_user']);
+                return $post;
+            }
+        }catch(\PDOException $e) {
+            echo $e;
+        }
+        return null;
     }
     public function getById(int $id) {
         try {

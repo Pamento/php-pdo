@@ -1,10 +1,26 @@
+body {
+  margin: 1rem 5rem;
+}
 a {
-  background: rgb(245, 234, 121);
-  border: 1px solid black;  
+  background: rgb(247, 241, 74);
+  border: 1px solid black;
   display: block;
   width: 200px;
   height: 2em;
   line-height: 2em;
+  margin-bottom: 0.3rem;
   padding: 0 1em;
   text-align: center;
+}
+td>a {
+  width: 50px;
+}
+img {
+  width: 1rem;
+  height: 1rem;
+}
+.inlineHead {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
 }
