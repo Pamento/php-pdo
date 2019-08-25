@@ -20,12 +20,15 @@ $app->get('/', function (Request $request, Response $response, array $args) {
 
 
 $app->get('/getArticles/{id}',function (Request $request, Response $response, array $args) {
-	$dao = new DaoPost();
-	$articles = $dao->getAll();
-	return $this->view->render($response, 'index.twig', [
-		'articles'=> $articles
+    $dao = new DaoPost();
+    $daoUser = new DaoUser();
+    $user = $daoUser->getById($args['id']);
+	$articles = $dao->getAll($args['id']);
+	return $this->view->render($response, 'articles.twig', [
+        'articles'=> $articles,
+        'user' => $user
 	]);
-});
+})->setName('getArticles');
 
 
 
@@ -52,24 +55,47 @@ $app->post('/adduser', function (Request $request, Response $response, array $ar
 
 
 
-
-
-
+// ========= login ========= login ========= login ========= login ========= login ========= login
 $app->get('/login', function (Request $request, Response $response, array $args) {
+    $user = $_SESSION['user'];
+    if(!empty($user)) {
+        $daoArticle =  new DaoPost();
+        $articles = $daoArticle->getByUser($user->getEmail());
+      
+        return $this->view->render($response, 'myBlog.twig',[
+            'articles'=>$articles
+        ]);
+    }
     return $this->view->render($response, 'login.twig');
 })->setName('login');
-// ========= login
+// ========= login ========= login ========= login ========= login ========= login ========= login
+// ========= login ========= login ========= login ========= login ========= login ========= login
 $app->post('/login', function (Request $request, Response $response, array $args) {
-	$dao = new DaoUser();
-	$form = $request->getParsedBody();
+    $dao = new DaoUser();
+    $daoArticle = new DaoPost();
+    $form = $request->getParsedBody();
     $logUser = $dao->getByLogin($form['email'], $form['password']);
+
     if ($logUser ){
-        return $this->view->render($response, 'myBlog.twig');
+        $_SESSION['user'] = $logUser;
+
+        return $response->withRedirect('/myBlog');// add afish message: "login denided"
+    }
+    return $response->withRedirect('/');// add afish message: "login denided"
+})->setName('login');
+// ========= login ========= login ========= login ========= login ========= login ========= login
+$app->get('/myBlog', function (Request $request, Response $response, array $args) {
+    $user = $_SESSION['user'];
+    if(!empty($user)) {
+        $daoArticle =  new DaoPost();
+        $articles = $daoArticle->getByUser($user->getEmail());
+      
+        return $this->view->render($response, 'myBlog.twig',[
+            'articles'=>$articles
+        ]);
     }
     return $response->withRedirect('/');// add afish message: "login denided"
 })->setName('myBlog');
-
-
 
 
 
@@ -102,9 +128,46 @@ $app->post('/updateuser/{id}', function (Request $request, Response $response, a
 
 
 
-$app->get('/deleteuser/{id}', function (Request $request, Response $response, array $args) {
-    $dao = new DaoUser;
+$app->get('/deletepost/{id}', function (Request $request, Response $response, array $args) {
+    $dao = new DaoPost;
     $dao->delete($args['id']);
-    $redirectUrl = $this->router->pathFor('index');
+    $redirectUrl = $this->router->pathFor('myBlog');
     return $response->withRedirect($redirectUrl);
-})->setName('deleteuser');
+})->setName('deletepost');
+
+
+
+$app->get('/updatepost/{id}', function (Request $request, Response $response, array $args) {
+    $dao = new DaoPost;
+    $post = $dao->getById($args['id']);
+
+    return $this->view->render($response, 'myBlog.twig', [
+        'post' => $post
+    ]);
+})->setName('updatepost');
+// ========= updatepost
+$app->post('/updatepost/{id}', function (Request $request, Response $response, array $args) {
+    $dao = new DaoPost;
+    $postData = $request->getParsedBody();
+
+    $post = $dao->getById($args['id']);
+    $post->setTitle($postData['title']);
+    $post->setArticle($postData['article']);
+    $newPost = new Post($post);
+
+    $dao->update($newPost);
+    $redirectUrl = $this->router->pathFor('myBlog');
+    return $response->withRedirect($redirectUrl);
+})->setName('updatepost');
+
+        // $app->get('/adduser', function (Request $request, Response $response, array $args) {
+        //     return $this->view->render($response, 'adduser.twig');
+        // })->setName('adduser');
+
+        // $app->post('/adduser', function (Request $request, Response $response, array $args) {
+        //     $form = $request->getParsedBody();
+        //     $newUser = new User($form['name'], $form['surname'], $form['username'], $form['email'],$form['password'] );
+        //     $dao = new DaoUser();
+        //         $dao->add($newUser);
+        //         return $response->withRedirect('/');
+        // })->setName('index');

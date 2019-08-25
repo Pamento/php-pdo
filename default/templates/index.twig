@@ -1,67 +1,63 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="utf-8" />
-    <title>Blog Molos</title>
-    <link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
-		<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
-		crossorigin="anonymous">
-		<link rel="stylesheet" href="style.css">
+	<meta charset="utf-8" />
+	<title>Blog Molos</title>
+	<link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+	crossorigin="anonymous">
+	<link rel="stylesheet" href="/style.css">
 </head>
-
 <body>
 	<div class="inlineHead">
 		<div>
-    <a href="{{ path_for('adduser') }}">Add Bl(a)ger</a>
-		<a href="{{ path_for('login') }}">I log me In ></a>
+    <a href="{{ path_for('adduser') }}">Add Me On</a>
+		<a href="{{ path_for('login') }}">I go In ></a>
 		</div>
 		<h1>Molos blogoS</h1>
 	</div>
+	<table class="table">
+		<thead class="thead-default">
+			<tr>
+					<th> Name </th>
+					<th> Surname </th>
+					<th> Username </th>
+					<th> Articles </th>
+					{# <th> Delete </th> #}
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+			<tr>
+				{# <th scope="row">{{ user.id }}</th> #}
+				<td>{{ user.name }}</td>
+				<td>{{ user.surname }}</td>
+				<td>{{ user.username }}</td>
+				<td>
+					<a href="{{ path_for('getArticles', {'id': user.id}) }}">
+						<img src="glyph-iconset-master/svg/si-glyph-game-1.svg" alt="">
+					</a>
+				</td>
+			{# <td>
+					<a href="{{ path_for('deleteuser', {'id': user.id}) }}">
+						<img src="glyph-iconset-master/svg/si-glyph-pen-nib.svg" alt="">
+					</a>
+			</td> #}
+			</tr>
 
-    <table class="table">
-        <thead class="thead-default">
-            <tr>
-                <th> ID </th>
-                <th> Name </th>
-                <th> Surname </th>
-                <th> Username </th>
-                {# <th> Articles </th>
-                <th> Delete </th> #}
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users %}
-            <tr>
-                <th scope="row">{{ user.id }}</th>
-                <td>{{ user.name }}</td>
-                <td>{{ user.surname }}</td>
-                <td>{{ user.username }}</td>
-                {# <td>
-                    <a href="{{ path_for('getArticles', {'id': user.id}) }}">
-											<img src="glyph-iconset-master/svg/si-glyph-game-1.svg" alt="">
-                    </a>
-                </td>
-                <td>
-                    <a href="{{ path_for('deleteuser', {'id': user.id}) }}">
-											<img src="glyph-iconset-master/svg/si-glyph-pen-nib.svg" alt="">
-                    </a>
-                </td> #}
-            </tr>
-
-            {% endfor %}
-        </tbody>
-    </table>
+			{% endfor %}
+		</tbody>
+	</table>
 
 
 
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
-        crossorigin="anonymous"></script>
-</body>
-
+	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+			crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+			crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+			crossorigin="anonymous"></script>
+		<script src="/script.js"></script>
+	</body>
 </html>

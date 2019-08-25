@@ -1,6 +1,3 @@
-<?php
-session_start();
->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -9,29 +6,86 @@ session_start();
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
       crossorigin="anonymous">
-  <link rel="stylesheet" href="style.css">
-  <title>Blog login</title>
+  <link rel="stylesheet" href="/style.css">
+  <title>my-Blog</title>
 </head>
 <body>
-<div class="inlineHead">
-  <a href="{{ path_for('index') }}">back to HOMEpage</a>
-  <h1>mY bloG</h1>
-</div>
-  <form action="#">
-      <div class="form-group">
-          <label for="titlePost">Title :</label>
-          <textarea class="form-control offset-1 col-5" id="titlePost" rows="1"></textarea>
-      </div>
-    <div class="form-group">
-        <label for="article">Article :</label>
-        <textarea class="form-control offset-1 col-8" id="article" rows="4"></textarea>
+
+    <div class="inlineHead">
+        <a href="{{ path_for('index') }}">back to HOME</a>
+        <button id="addNewArticle">new Article</button>
+        <h1>Athene sQuer</h1>
     </div>
-    <div class="form-group row">
-        <div class="col-12">
-            <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+
+    {% if post %}
+    <div>
+        <form action="{{ path_for('updatepost', {'id': post.id.id}) }}" method="post">
+            <div class="form-group">
+                <label for="titlePost">Title :</label>
+                <textarea name="title" class="form-control offset-1 col-5" id="titlePost" rows="1">{{ post.title }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="article">Article :</label>
+                <textarea name="article" class="form-control offset-1 col-8" id="article" rows="19" >{{ post.article }}</textarea>
+            </div>
+            <div class="form-group row">
+                <div class="col-12">
+                    <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% else %}
+
+    <div class="hiddeFormBlog " id="formForNewArticle">
+    <form action="#">
+        <div class="form-group">
+            <label for="titlePost">Title :</label>
+            <textarea class="form-control offset-1 col-5" id="titlePost" rows="1"></textarea>
         </div>
+        <div class="form-group">
+            <label for="article">Article :</label>
+            <textarea class="form-control offset-1 col-8" id="article" rows="4" ></textarea>
+        </div>
+        <div class="form-group row">
+            <div class="col-12">
+                <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
     </div>
-  </form>
+
+    <table class="table">
+        <thead class="thead-default">
+            <tr>
+                <th> title </th>
+                <th> content </th>
+                <th> edit </th>
+                <th> delete </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in articles %}
+            <tr>
+                {# <th scope="row">{{ item.id }}</th> #}
+                <td>{{ item.title }}</td>
+                <td>{{ item.article }}</td>
+                <td>
+                    <a href="{{ path_for('updatepost', {'id': item.id}) }}">
+                        <img src="glyph-iconset-master/svg/si-glyph-pen-nib.svg" alt="">
+                    </a>
+                </td>
+                {# <td>
+                    <a href="{{ path_for('deletepost', {'id': item.id}) }}">
+                        <img src="glyph-iconset-master/svg/si-glyph-trash.svg" alt="">
+                    </a>
+                </td> #}
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
 
   {% if newId %}
   <p>You successfuly added a new person with id {{newId}}</p>
@@ -44,5 +98,6 @@ session_start();
       crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
       crossorigin="anonymous"></script>
+    <script src="/script.js"></script>
 </body>
 </html>
